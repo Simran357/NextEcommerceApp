@@ -1,19 +1,22 @@
 
 "use client";
 
-interface SearchBarProps {
-  search: string;
-  setSearch: (value: string) => void;
-}
-
+import {SearchBarProps} from "@/interfaces/product"
+import { useAuth } from "../context/authContext";
 export default function SearchBar({
   search,
   setSearch,
 }: SearchBarProps) {
+  const { user} = useAuth();
   return (
     <input
       type="text"
-      placeholder="Search Products..."
+      disabled={!user}
+     placeholder={
+   user
+     ? "Search products..."
+     : "Login to search products"
+}
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       className="w-full border rounded-xl px-4 py-3 outline-none focus:border-blue-500"

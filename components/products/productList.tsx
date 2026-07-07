@@ -3,10 +3,9 @@
 import { useState } from "react";
 import type { ProductGridProps } from "@/interfaces/product";
 import { useFilter } from "@/components/context/filterContext";
-
 import Navbar from "@/components/layout/navbar";
 import Sidebar from "@/components/layout/sidebar";
-
+import ProtectedAction from "../common/protectedActions";
 import ProductGrid from "./productGrid";
 import ProductFilters from "./productFilter";
 import LoginModal from "@/components/auth/model/loginModel";
@@ -24,7 +23,7 @@ export default function ProductList({
     discount,
     sort,
   } = useFilter();
-const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(search, 500);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
@@ -97,45 +96,61 @@ const debouncedSearch = useDebounce(search, 500);
   }
 
   return (
-    <>
-      <Navbar
-        setShowLogin={setShowLogin}
-        setShowSignup={setShowSignup}
+  <>
+    <Navbar
+      setShowLogin={setShowLogin}
+      setShowSignup={setShowSignup}
+    />
+
+    {showLogin && (
+      <LoginModal
+        onClose={() => setShowLogin(false)}
+        openSignup={() => {
+          setShowLogin(false);
+          setShowSignup(true);
+        }}
       />
+    )}
 
-      {showLogin && (
-        <LoginModal
-          onClose={() => setShowLogin(false)}
-          openSignup={() => {
-            setShowLogin(false);
-            setShowSignup(true);
-          }}
-        />
-      )}
+    {showSignup && (
+      <SignupModal
+        onClose={() => setShowSignup(false)}
+        openLogin={() => {
+          setShowSignup(false);
+          setShowLogin(true);
+        }}
+      />
+    )}
 
-      {showSignup && (
-        <SignupModal
-          onClose={() => setShowSignup(false)}
-          openLogin={() => {
-            setShowSignup(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
+    <main className="max-w-7xl mx-auto px-6 py-8">
 
-      <div className="max-w-7xl mx-auto mt-8 grid grid-cols-12 gap-6">
-        <div className="col-span-3">
-          <Sidebar />
-        </div>
+   <div className="flex justify-between items-center mb-6">
+  <div>
+    <h1 className="text-3xl font-bold">Products</h1>
 
-        <div className="col-span-9">
-          <ProductFilters />
+    <p className="text-gray-500 mt-1">
+      {filteredProducts.length} products available
+    </p>
+  </div>
 
-          <ProductGrid
-            products={filteredProducts}
-          />
-        </div>
-      </div>
-    </>
-  );
+  <ProductFilters />
+</div>
+
+<div className="grid grid-cols-12 gap-8">
+  <aside className="col-span-3">
+    <ProtectedAction
+      onLoginRequired={() => setShowLogin(true)}
+    >
+      <Sidebar />
+    </ProtectedAction>
+  </aside>
+
+  <section className="col-span-9">
+    <ProductGrid products={filteredProducts} />
+  </section>
+</div>
+
+    </main>
+  </>
+);
 }

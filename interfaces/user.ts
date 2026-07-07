@@ -11,6 +11,16 @@ export interface AuthContextType {
   user: User | null;
 
   loading: boolean;
-
+isAuthenticated: boolean;
   logout: () => Promise<void>;
+}
+
+export interface LoginModalProps {
+  onClose: () => void;
+  openSignup: () => void;
+}
+
+export interface SignupModalProps {
+  onClose: () => void;
+  openLogin: () => void;
 }

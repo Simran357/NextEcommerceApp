@@ -19,30 +19,42 @@ export function FilterProvider({
   const [sort, setSort] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const resetFilters = () => {
+  setSearch("");
+  setCategory("");
+  setBrand("");
+  setRating(0);
+  setStock("");
+  setDiscount(0);
+  setSort("");
+  setMinPrice("");
+  setMaxPrice("");
+};
 
   return (
-    <FilterContext.Provider
-      value={{
-        search,
-        setSearch,
-        category,
-        setCategory,
-        brand,
-        setBrand,
-        rating,
-        setRating,
-        stock,
-        setStock,
-        discount,
-        setDiscount,
-        sort,
-        setSort,
-        minPrice,
-        setMinPrice,
-        maxPrice,
-        setMaxPrice,
-      }}
-    >
+   <FilterContext.Provider
+  value={{
+    search,
+    setSearch,
+    category,
+    setCategory,
+    brand,
+    setBrand,
+    rating,
+    setRating,
+    stock,
+    setStock,
+    discount,
+    setDiscount,
+    sort,
+    setSort,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    resetFilters,
+  }}
+>
       {children}
     </FilterContext.Provider>
   );

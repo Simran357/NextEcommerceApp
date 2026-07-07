@@ -2,16 +2,11 @@
 
 import AuthForm from "@/components/auth/authForm"
 import { supabase } from "@/lib/supabase";
-
-interface Props {
-  onClose: () => void;
-  openSignup: () => void;
-}
-
+import type { LoginModalProps } from "@/interfaces/user"
 export default function LoginModal({
   onClose,
   openSignup,
-}: Props) {
+}: LoginModalProps) {
   const handleLogin = async (
     email: string,
     password: string
@@ -20,24 +15,30 @@ export default function LoginModal({
       email,
       password,
     });
-
     if (error) {
       alert(error.message);
       return;
     }
-
     onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+      <div
+        className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+        onClick={onClose}>
+        <div
+          onClick={(e) => e.stopPropagation()}>
+          <AuthForm
+            title="Login"
+            buttonText="Login"
+            onSubmit={handleLogin}
+            changeForm={openSignup}
+          />
+        </div>
 
-      <AuthForm
-        title="Login"
-        buttonText="Login"
-        onSubmit={handleLogin}
-        changeForm={openSignup}
-      />
+      </div>
+
 
     </div>
   );

@@ -11,7 +11,6 @@ export default function AuthForm({
 }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const isLogin = title === "Login";
 
   return (
@@ -33,6 +32,7 @@ export default function AuthForm({
       >
         <input
           type="email"
+          autoComplete="email"
           placeholder="Email"
           className="w-full border rounded-lg p-3"
           value={email}
@@ -43,6 +43,7 @@ export default function AuthForm({
           type="password"
           placeholder="Password"
           className="w-full border rounded-lg p-3"
+           autoComplete={title === "Login" ? "current-password" : "new-password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

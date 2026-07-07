@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ProductCardProps } from "@/interfaces/product";
-
+import { useAuth } from "../context/authContext";
 export default function ProductCard({
   product,
 }: ProductCardProps) {
@@ -9,6 +9,9 @@ export default function ProductCard({
     product.price -
     (product.price * product.discount_percentage) / 100
   ).toFixed(2);
+
+  const { user} = useAuth();
+
 
   return (
     <Link href={`/products/${product.id}`}>
@@ -58,9 +61,17 @@ export default function ProductCard({
               ₹ {product.price}
             </p>
           </div>
-          <button className="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3 font-semibold">
-            Add To Cart
-          </button>
+
+<button
+  disabled={!user}
+  className={`w-full mt-5 rounded-lg py-3 font-semibold ${
+    user
+      ? "bg-blue-600 hover:bg-blue-700 text-white"
+      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+  }`}
+>
+  {user ? "Add To Cart" : "Login to Add"}
+</button>
         </div>
       </div>
     </Link>
