@@ -24,6 +24,8 @@ export default function Navbar({
     console.error("Logout failed:", error);
   }
 };
+const { role } = useAuth();
+
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
@@ -65,6 +67,8 @@ export default function Navbar({
               <FaUserCircle
                 size={32}
                 className="text-gray-600"/>
+
+<p>{role}</p>
            <button
   onClick={handleLogout}
   className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"

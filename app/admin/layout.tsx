@@ -1,5 +1,5 @@
 import ProtectedAdmin from "@/components/admin/protectedAdmin";
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminSidebar from "@/components/admin/adminSidebar";
 import AdminNavbar from "@/components/admin/adminNavbar";
 
 export default function AdminLayout({

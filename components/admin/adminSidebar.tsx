@@ -22,13 +22,7 @@ export default function AdminSidebar() {
                     <FaChartBar />
                     Dashboard
                 </Link>
-                <Link
-                    href="/admin/products"
-                    className="flex gap-3 p-3 rounded-xl hover:bg-slate-800"
-                >
-                    <FaBox />
-                    Products
-                </Link>
+             
                 <Link
                     href="/admin/products/add"
                     className="flex gap-3 p-3 rounded-xl hover:bg-slate-800"

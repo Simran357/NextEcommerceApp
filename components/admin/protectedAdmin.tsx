@@ -27,6 +27,9 @@ export default function ProtectedAdmin({
         Loading...
       </div>
     );
+if (!user || role !== "admin") {
+  return null;
+}
 
-  return <>{children}</>;
+return <>{children}</>;
 }
