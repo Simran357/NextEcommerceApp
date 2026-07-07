@@ -43,14 +43,15 @@ export default function ProductGrid({
         <div>
           <div className="bg-white border rounded-3xl shadow-sm p-10 sticky top-24">
             <div className="relative h-[520px]">
-              <Image
-                src={product.thumbnail}
-                alt={product.title}
-                fill
-                priority
-                sizes="50vw"
-                className="object-contain"
-              />
+             <Image
+  src={product.thumbnail}
+  alt={product.title}
+  fill
+  priority
+  loading="eager"
+  sizes="(max-width:768px) 100vw, 50vw"
+  className="object-contain"
+/>
             </div>
           </div>
         </div>
