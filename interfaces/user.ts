@@ -25,8 +25,12 @@ export interface SignupModalProps {
   openLogin: () => void;
 }
 
-export interface adminDashboardProps {
-  title: string;
-  value: string | number;
-  icon: React.ReactNode;
+export interface adminDashboardProps{
+
+title:string;
+
+value:string|number;
+
+icon:string;
+
 }

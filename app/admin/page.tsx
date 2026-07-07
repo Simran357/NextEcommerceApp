@@ -1,43 +1,60 @@
 import DashboardCard from "@/components/admin/dashbaordCard";
-import {
-  FaBoxOpen,
-  FaShoppingCart,
-  FaUsers,
-  FaRupeeSign,
-} from "react-icons/fa";
+import ProductTable from "@/components/admin/productForm";
+import { getProducts } from "@/lib/products";
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+
+    const products = await getProducts();
+
     return (
-        <>
-            <h1 className="text-4xl font-bold mb-8">
-                Dashboard
-            </h1>
-       <div className="grid grid-cols-4 gap-6">
-  <DashboardCard
-    title="Products"
-    value={194}
-    icon={<FaBoxOpen size={28} />}
-  />
 
-  <DashboardCard
-    title="Orders"
-    value={86}
-    icon={<FaShoppingCart size={28} />}
-  />
+        <div className="space-y-10">
 
-  <DashboardCard
-    title="Users"
-    value={34}
-    icon={<FaUsers size={28} />}
-  />
+            <div>
 
-  <DashboardCard
-    title="Revenue"
-    value="₹2.8L"
-    icon={<FaRupeeSign size={28} />}
-  />
-</div>
-        </>
+                <h1 className="text-4xl font-bold">
+                    Dashboard
+                </h1>
+
+                <p className="text-gray-500 mt-2">
+                    Welcome back Admin 👋
+                </p>
+
+            </div>
+
+            <div className="grid grid-cols-4 gap-6">
+
+                <DashboardCard
+                    title="Products"
+                    value={products.length}
+                    icon="📦"
+                />
+
+                <DashboardCard
+                    title="Users"
+                    value={12}
+                    icon="👥"
+                />
+
+                <DashboardCard
+                    title="Orders"
+                    value={46}
+                    icon="🛒"
+                />
+
+                <DashboardCard
+                    title="Revenue"
+                    value="₹1,28,000"
+                    icon="💰"
+                />
+
+            </div>
+
+            <ProductTable
+                products={products}
+            />
+
+        </div>
 
     );
 

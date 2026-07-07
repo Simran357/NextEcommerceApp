@@ -13,7 +13,7 @@ export default function LoginModal({
     email: string,
     password: string
   ) => {
-   const { data, error } = await supabase.auth.signInWithPassword({
+ const { data, error } = await supabase.auth.signInWithPassword({
   email,
   password,
 });
@@ -36,7 +36,6 @@ if (profile?.role === "admin") {
 } else {
   router.push("/products");
 }
-    onClose();
   };
 
   return (
