@@ -22,14 +22,18 @@ export interface ProductGridProps {
   products: Product[];
 }
 
-// ================= FILTER =================
+// ================= AUTH =================
 
-export interface ProductFilterProps {
-  category: string;
-  setCategory: (value: string) => void;
+export interface AuthFormProps {
+  title: string;
+  buttonText: string;
+  onSubmit: (email: string, password: string) => void;
+  changeForm: () => void;
+}
 
-  sort: string;
-  setSort: (value: string) => void;
+export interface NavbarModalProps {
+  setShowLogin: (value: boolean) => void;
+  setShowSignup: (value: boolean) => void;
 }
 
 // ================= CART =================
@@ -42,25 +46,6 @@ export interface CartState {
   items: CartItem[];
 }
 
-// ================= AUTH =================
-
-export interface AuthFormProps {
-  title: string;
-  buttonText: string;
-  onSubmit: (email: string, password: string) => void;
-  changeForm: () => void;
-}
-
-// ================= NAVBAR =================
-
-export interface NavbarProps {
-  search: string;
-  setSearch: (value: string) => void;
-
-  setShowLogin: (value: boolean) => void;
-  setShowSignup: (value: boolean) => void;
-}
-
 // ================= PROFILE =================
 
 export interface Profile {
@@ -68,4 +53,25 @@ export interface Profile {
   email: string;
   full_name: string;
   avatar_url?: string;
+}
+
+export interface FilterContextType {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
+  brand: string;
+  setBrand: React.Dispatch<React.SetStateAction<string>>;
+  rating: number;
+  setRating: React.Dispatch<React.SetStateAction<number>>;
+  stock: string;
+  setStock: React.Dispatch<React.SetStateAction<string>>;
+  discount: number;
+  setDiscount: React.Dispatch<React.SetStateAction<number>>;
+  sort: string;
+  setSort: React.Dispatch<React.SetStateAction<string>>;
+  minPrice: string;
+  setMinPrice: React.Dispatch<React.SetStateAction<string>>;
+  maxPrice: string;
+  setMaxPrice: React.Dispatch<React.SetStateAction<string>>;
 }

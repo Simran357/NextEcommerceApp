@@ -1,12 +1,12 @@
 "use client";
-import type {ProductFilterProps} from "@/interfaces/product"
-
-export default function ProductFilter({
+import { useFilter } from "../context/filterContext";
+export default function ProductFilter() {
+    const {
   category,
   setCategory,
   sort,
   setSort,
-}: ProductFilterProps) {
+} = useFilter();
   return (
     <div className="bg-white rounded-xl shadow p-4 mb-6 flex gap-4">
 

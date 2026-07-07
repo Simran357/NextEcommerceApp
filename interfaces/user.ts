@@ -1,3 +1,5 @@
+
+import type { User } from "@supabase/supabase-js";
 export interface Profile {
   id: string;
   email: string;
@@ -5,3 +7,10 @@ export interface Profile {
   avatar_url?: string;
 }
 
+export interface AuthContextType {
+  user: User | null;
+
+  loading: boolean;
+
+  logout: () => Promise<void>;
+}
