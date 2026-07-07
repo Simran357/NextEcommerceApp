@@ -4,9 +4,13 @@ import Link from "next/link";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import SearchBar from "../common/searchBar";
 import type { navbar } from "@/interfaces/user";
+
+
 export default function Navbar({
   search,
   setSearch,
+  setShowLogin,
+  setShowSignup,
 }: navbar) {
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
@@ -29,19 +33,19 @@ export default function Navbar({
 
         <div className="flex items-center gap-4">
 
-          <Link
-            href="/login"
-            className="border px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition"
-          >
-            Login
-          </Link>
+         <button
+  onClick={() => setShowLogin(true)}
+  className="border px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white"
+>
+  Login
+</button>
 
-          <Link
-            href="/signup"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-          >
-            Sign Up
-          </Link>
+         <button
+  onClick={() => setShowSignup(true)}
+  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+>
+  Sign Up
+</button>
 
           <button className="relative">
 
