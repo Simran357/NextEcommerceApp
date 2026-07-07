@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import SearchBar from "../common/searchBar";
-import type { navbar } from "@/interfaces/user";
+import type { NavbarProps } from "@/interfaces/product";
 
 
 export default function Navbar({
@@ -11,7 +11,7 @@ export default function Navbar({
   setSearch,
   setShowLogin,
   setShowSignup,
-}: navbar) {
+}: NavbarProps) {
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
 

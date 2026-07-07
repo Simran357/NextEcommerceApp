@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Product } from "@/interfaces/product";
+import type { ProductGridProps } from "@/interfaces/product";
 import LoginModal from "@/components/auth/model/loginModel";
 import SignupModal from "@/components/auth/model/signupModel";
 import Navbar from "@/components/layout/navbar";
@@ -9,11 +9,9 @@ import Sidebar from "@/components/layout/sidebar";
 import ProductGrid from "./productGrid";
 import ProductFilters from "./productFilter";
 
-interface Props {
-  products: Product[];
-}
-
-export default function ProductList({ products }: Props) {
+export default function ProductList({
+  products,
+}: ProductGridProps) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");

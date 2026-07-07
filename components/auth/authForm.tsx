@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AuthFormProps } from "@/interfaces/user";
+import type { AuthFormProps } from "@/interfaces/product";
 
 export default function AuthForm({
   title,

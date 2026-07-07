@@ -4,16 +4,18 @@ export const metadata = {
   title: "ShopEase",
   description: "E-Commerce",
 };
-
+import { FilterProvider } from "@/components/context/filterContext";
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+ return (
     <html lang="en">
-      <body className="bg-slate-100 min-h-screen">
-        {children}
+      <body className="bg-gray-100">
+        <FilterProvider>
+          {children}
+        </FilterProvider>
       </body>
     </html>
   );

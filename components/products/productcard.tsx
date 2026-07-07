@@ -1,12 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "@/interfaces/product";
+import type { ProductCardProps } from "@/interfaces/product";
 
-interface Props {
-  product: Product;
-}
-
-export default function ProductCard({ product }: Props) {
+export default function ProductCard({
+  product,
+}: ProductCardProps) {
   const finalPrice = (
     product.price -
     (product.price * product.discount_percentage) / 100
@@ -75,7 +73,6 @@ export default function ProductCard({ product }: Props) {
             </p>
 
           </div>
-
           <button className="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3 font-semibold">
             Add To Cart
           </button>

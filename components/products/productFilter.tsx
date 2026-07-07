@@ -1,12 +1,5 @@
 "use client";
-
-interface ProductFilterProps {
-  category: string;
-  setCategory: (value: string) => void;
-
-  sort: string;
-  setSort: (value: string) => void;
-}
+import type {ProductFilterProps} from "@/interfaces/product"
 
 export default function ProductFilter({
   category,
