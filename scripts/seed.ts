@@ -1,6 +1,11 @@
+import "dotenv/config";
 import products from "../products.json";
-import {supabase} from "../lib/supabase"
+import { createClient } from "@supabase/supabase-js";
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 async function seed() {
   const { error } = await supabase.from("products").insert(
@@ -23,7 +28,7 @@ async function seed() {
     return;
   }
 
-  console.log("Products Inserted");
+  console.log("Products Inserted Successfully");
 }
 
 seed();

@@ -7,7 +7,7 @@ export async function getProducts(): Promise<Product[]> {
     .select("*");
 
   if (error) {
-    console.error(error);
+    console.log(error);
     return [];
   }
 
