@@ -3,15 +3,11 @@
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import SearchBar from "../common/searchBar";
-interface Props {
-  search: string;
-  setSearch: (value: string) => void;
-}
-
+import type { navbar } from "@/interfaces/user";
 export default function Navbar({
   search,
   setSearch,
-}: Props) {
+}: navbar) {
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
 

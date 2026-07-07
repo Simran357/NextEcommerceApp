@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import type { AuthFormProps } from "@/interfaces/user";
 
@@ -8,6 +7,7 @@ export default function AuthForm({
   title,
   buttonText,
   onSubmit,
+  changeForm,
 }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,19 +54,29 @@ export default function AuthForm({
 
       <p className="text-center mt-5">
         {isLogin ? (
-          <>
-Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-blue-600 font-semibold">
-              Sign Up
-            </Link>
-          </>
+         <>
+  Don&apos;t have an account?{" "}
+
+  <button
+    type="button"
+    onClick={changeForm}
+    className="text-blue-600 font-semibold"
+  >
+    Sign Up
+  </button>
+</>
         ) : (
-          <>
-            Already have an account?{" "}
-            <Link href="/login" className="text-blue-600 font-semibold">
-              Login
-            </Link>
-          </>
+         <>
+  Already have an account?{" "}
+
+  <button
+    type="button"
+    onClick={changeForm}
+    className="text-blue-600 font-semibold"
+  >
+    Login
+  </button>
+</>
         )}
       </p>
     </div>

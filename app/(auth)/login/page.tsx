@@ -23,10 +23,11 @@ export default function Login() {
   };
 
   return (
-    <AuthForm
-      title="Login"
-      buttonText="Login"
-      onSubmit={handleLogin}
-    />
+   <AuthForm
+  title="Login"
+  buttonText="Login"
+  onSubmit={handleLogin}
+  changeForm={() => router.push("/signup")}
+/>
   );
 }

@@ -10,14 +10,14 @@ export default function ProductCard({ product }: Props) {
     <div className="bg-white rounded-lg shadow p-4">
 
       <div className="relative h-48 w-full">
-   <Image
-  src={product.thumbnail}
-  alt={product.title}
-  width={300}
-  height={220}
-  loading="eager"
-  className="w-full h-56 object-cover rounded-t-xl"
-/>
+        <Image
+          src={product.thumbnail}
+          alt={product.title}
+          width={300}
+          height={220}
+          loading="eager"
+          className="w-full h-56 object-cover rounded-t-xl"
+        />
       </div>
 
       <h2 className="font-bold mt-3">

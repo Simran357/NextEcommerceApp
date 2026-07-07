@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import type { Product } from "@/interfaces/product";
-
+import LoginModal from "@/components/auth/model/loginModel";
+import SignupModal from "@/components/auth/model/signupModel";
 import Navbar from "@/components/layout/navbar";
 import Sidebar from "@/components/layout/sidebar";
 import ProductGrid from "./productGrid";
@@ -16,6 +17,8 @@ export default function ProductList({ products }: Props) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [sort, setSort] = useState("");
+  const [showLogin, setShowLogin] = useState(false);
+const [showSignup, setShowSignup] = useState(false);
 
   let filteredProducts = [...products];
 
@@ -41,10 +44,31 @@ export default function ProductList({ products }: Props) {
 
   return (
     <>
-      <Navbar
-        search={search}
-        setSearch={setSearch}
-      />
+     <Navbar
+  search={search}
+  setSearch={setSearch}
+  setShowLogin={setShowLogin}
+  setShowSignup={setShowSignup}
+/>
+{showLogin && (
+  <LoginModal
+    onClose={() => setShowLogin(false)}
+    openSignup={() => {
+      setShowLogin(false);
+      setShowSignup(true);
+    }}
+  />
+)}
+
+{showSignup && (
+  <SignupModal
+    onClose={() => setShowSignup(false)}
+    openLogin={() => {
+      setShowSignup(false);
+      setShowLogin(true);
+    }}
+  />
+)}
 
       <div className="max-w-7xl mx-auto mt-8 grid grid-cols-12 gap-6">
 

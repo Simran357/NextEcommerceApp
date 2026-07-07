@@ -11,3 +11,10 @@ export interface Product {
   thumbnail: string;
   created_at: string;
 }
+
+export interface productCardProps {
+  product: Product;
+}
+export interface productGridProps {
+  products: Product[];
+}
