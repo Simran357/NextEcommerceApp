@@ -1,5 +1,10 @@
 import "./globals.css";
 
+export const metadata = {
+  title: "ShopEase",
+  description: "E-Commerce",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -7,7 +12,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gray-100">{children}</body>
+      <body className="bg-slate-100 min-h-screen">
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,51 +1,74 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
-import { supabase } from "@/lib/supabase";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import SearchBar from "../common/searchBar";
+interface Props {
+  search: string;
+  setSearch: (value: string) => void;
+}
 
-export default function Navbar() {
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push("/login");
-  };
-
+export default function Navbar({
+  search,
+  setSearch,
+}: Props) {
   return (
-    <nav className="bg-white shadow">
-      <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
-        <Link href="/products" className="text-2xl font-bold text-blue-600">
+    <nav className="bg-white shadow sticky top-0 z-50">
+
+      <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
+
+        <Link
+          href="/products"
+          className="text-3xl font-bold text-blue-600"
+        >
           ShopEase
         </Link>
 
-        <input
-          type="text"
-          placeholder="Search Products..."
-          className="border rounded-lg px-4 py-2 w-96"
-        />
+      <div className="w-[420px]">
+  <SearchBar
+    search={search}
+    setSearch={setSearch}
+  />
+</div>
 
-        <div className="flex items-center gap-5">
-          <Link href="/profile">
-            <FaUser size={22} />
+        <div className="flex items-center gap-4">
+
+          <Link
+            href="/login"
+            className="border px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white transition"
+          >
+            Login
           </Link>
 
-          <Link href="/cart" className="relative">
-            <FaShoppingCart size={22} />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs h-5 w-5 rounded-full flex items-center justify-center">
+          <Link
+            href="/signup"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          >
+            Sign Up
+          </Link>
+
+          <button className="relative">
+
+            <FaShoppingCart
+              size={28}
+              className="text-gray-700"
+            />
+
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex justify-center items-center">
               0
             </span>
-          </Link>
 
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded"
-          >
-            Logout
           </button>
+
+          <FaUserCircle
+            size={32}
+            className="text-gray-600"
+          />
+
         </div>
+
       </div>
+
     </nav>
   );
 }

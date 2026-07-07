@@ -1,6 +1,6 @@
 "use client";
 
-import AuthForm from "@/components/common/authForm";
+import AuthForm from "@/components/auth/authForm";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 

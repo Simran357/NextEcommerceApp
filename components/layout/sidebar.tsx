@@ -1,35 +1,65 @@
-export default function Sidebar() {
-  return (
-    <aside className="w-64 bg-white p-5 rounded-lg shadow">
+"use client";
 
-      <h2 className="font-bold text-xl mb-4">
-        Filters
+interface Props {
+  category: string;
+  setCategory: (value: string) => void;
+}
+
+export default function Sidebar({
+  category,
+  setCategory,
+}: Props) {
+  return (
+    <aside className="bg-white rounded-xl shadow p-5">
+
+      <h2 className="text-xl font-bold mb-4">
+        Categories
       </h2>
 
       <div className="space-y-3">
 
-        <select className="w-full border p-2 rounded">
-          <option>All Categories</option>
-          <option>Electronics</option>
-          <option>Fashion</option>
-          <option>Home</option>
-          <option>Sports</option>
-        </select>
+        <button
+          onClick={() => setCategory("")}
+          className={`block w-full text-left p-2 rounded ${
+            category === ""
+              ? "bg-blue-600 text-white"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          All
+        </button>
 
-        <input
-          type="number"
-          placeholder="Min Price"
-          className="border p-2 rounded w-full"
-        />
+        <button
+          onClick={() => setCategory("beauty")}
+          className={`block w-full text-left p-2 rounded ${
+            category === "beauty"
+              ? "bg-blue-600 text-white"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          Beauty
+        </button>
 
-        <input
-          type="number"
-          placeholder="Max Price"
-          className="border p-2 rounded w-full"
-        />
+        <button
+          onClick={() => setCategory("groceries")}
+          className={`block w-full text-left p-2 rounded ${
+            category === "groceries"
+              ? "bg-blue-600 text-white"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          Groceries
+        </button>
 
-        <button className="bg-blue-600 text-white w-full rounded p-2">
-          Apply
+        <button
+          onClick={() => setCategory("furniture")}
+          className={`block w-full text-left p-2 rounded ${
+            category === "furniture"
+              ? "bg-blue-600 text-white"
+              : "hover:bg-gray-100"
+          }`}
+        >
+          Furniture
         </button>
 
       </div>
