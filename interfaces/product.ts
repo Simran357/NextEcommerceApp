@@ -1,8 +1,13 @@
 export interface Product {
   id: number;
-  name: string;
+  title: string;
   description: string;
+  category: string;
   price: number;
-  image_url: string;
+  discount_percentage: number;
+  rating: number;
+  stock: number;
+  brand: string;
+  thumbnail: string;
   created_at: string;
 }
