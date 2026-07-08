@@ -6,6 +6,8 @@ import type { NavbarModalProps } from "@/interfaces/product";
 import { useAuth } from "../context/authContext"
 import { FaHeart } from "react-icons/fa";
 import { useWishlist } from "@/components/context/wishlistContext";
+import { useCart } from "@/components/context/cartContext";
+
 export default function Navbar({
   setShowLogin,
   setShowSignup,
@@ -15,6 +17,8 @@ const { wishlist } = useWishlist();
     search,
     setSearch,
   } = useFilter();
+
+const { cartCount } = useCart();
   const { user, logout } = useAuth();
   const { resetFilters } = useFilter();
   const handleLogout = async () => {
@@ -57,14 +61,21 @@ const { role } = useAuth();
             </>
           ) : (
             <>
-              <button className="relative">
-                <FaShoppingCart
-                  size={28}
-                  className="text-gray-700"/>
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex justify-center items-center">
-                  0
-                </span>
-              </button>
+           <Link
+  href="/cart"
+  className="relative"
+>
+  <FaShoppingCart
+    size={28}
+    className="text-gray-700"
+  />
+
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] text-white">
+      {cartCount}
+    </span>
+  )}
+</Link>
           {user ? (
   <Link href="/wishlist" className="relative">
     <FaHeart size={22} />

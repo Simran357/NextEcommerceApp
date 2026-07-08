@@ -9,6 +9,8 @@ import SignupModal from "@/components/auth/model/signupModel";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useWishlist } from "../context/wishlistContext";
 import type { ProductCardProps } from "@/interfaces/product";
+import { useCart } from "../context/cartContext";
+import { useRouter } from "next/navigation";
 
 export default function ProductDetailsClient({
   product,
@@ -19,11 +21,13 @@ export default function ProductDetailsClient({
     removeWishlist,
     isWishlisted,
   } = useWishlist();
-
+  const router = useRouter();
   const wishlisted = isWishlisted(product.id);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const { addToCart, isInCart } = useCart();
 
+const added = isInCart(product.id);
   const finalPrice = (
     product.price -
     (product.price * product.discount_percentage) / 100
@@ -66,27 +70,27 @@ export default function ProductDetailsClient({
 
               <div className="sticky top-24 rounded-[40px] border border-white/60 bg-white/70 backdrop-blur-xl shadow-2xl p-10">
 
-              <button
-  onClick={async () => {
-    if (!user) {
-      setShowLogin(true);
-      return;
-    }
+                <button
+                  onClick={async () => {
+                    if (!user) {
+                      setShowLogin(true);
+                      return;
+                    }
 
-    if (wishlisted) {
-      await removeWishlist(product.id);
-    } else {
-      await addWishlist(product.id);
-    }
-  }}
-  className="absolute right-8 top-8 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition hover:scale-110"
->
-  {wishlisted ? (
-    <FaHeart className="text-2xl text-red-500" />
-  ) : (
-    <FaRegHeart className="text-2xl" />
-  )}
-</button>
+                    if (wishlisted) {
+                      await removeWishlist(product.id);
+                    } else {
+                      await addWishlist(product.id);
+                    }
+                  }}
+                  className="absolute right-8 top-8 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-lg transition hover:scale-110"
+                >
+                  {wishlisted ? (
+                    <FaHeart className="text-2xl text-red-500" />
+                  ) : (
+                    <FaRegHeart className="text-2xl" />
+                  )}
+                </button>
                 <div className="relative h-[560px]">
 
                   <Image
@@ -129,8 +133,8 @@ export default function ProductDetailsClient({
 
                 <span
                   className={`font-semibold ${product.stock > 0
-                      ? "text-green-600"
-                      : "text-red-500"
+                    ? "text-green-600"
+                    : "text-red-500"
                     }`}
                 >
                   {product.stock > 0
@@ -202,32 +206,44 @@ export default function ProductDetailsClient({
               {/* Action Buttons */}
 
               <div className="grid grid-cols-2 gap-5 mt-10">
+             <button
+  disabled={!user || added}
+  onClick={async () => {
+    if (!user) {
+      setShowLogin(true);
+      return;
+    }
+
+    await addToCart(product.id);
+  }}
+  className={`rounded-2xl py-5 font-semibold text-lg transition ${
+    !user
+      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+      : added
+      ? "bg-green-600 text-white cursor-default"
+      : "bg-black text-white hover:scale-105 hover:shadow-2xl"
+  }`}
+>
+  {!user
+    ? "Login to Add"
+    : added
+    ? "✓ Added to Cart"
+    : "🛒 Add To Cart"}
+</button>
 
                 <button
                   disabled={!user}
-                  onClick={() => {
-                    if (!user) {
-                      setShowLogin(true);
-                    }
-                  }}
-                  className={`rounded-2xl py-5 font-semibold text-lg transition duration-300 ${user
-                      ? "bg-black text-white hover:scale-105 hover:shadow-2xl"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                >
-                  {user ? "🛒 Add To Cart" : "Login to Add"}
-                </button>
+                 onClick={() => {
+  if (!user) {
+    setShowLogin(true);
+    return;
+  }
 
-                <button
-                  disabled={!user}
-                  onClick={() => {
-                    if (!user) {
-                      setShowLogin(true);
-                    }
-                  }}
+  router.push(`/checkout?product=${product.id}`);
+}}
                   className={`rounded-2xl border-2 py-5 font-semibold text-lg transition duration-300 ${user
-                      ? "border-black hover:bg-black hover:text-white"
-                      : "border-gray-300 text-gray-400 cursor-not-allowed"
+                    ? "border-black hover:bg-black hover:text-white"
+                    : "border-gray-300 text-gray-400 cursor-not-allowed"
                     }`}
                 >
                   {user ? "⚡ Buy Now" : "Login First"}

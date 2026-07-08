@@ -4,6 +4,9 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useWishlist } from "../context/wishlistContext";
 import type { ProductCardProps } from "@/interfaces/product";
 import { useAuth } from "../context/authContext";
+import { useCart } from "../context/cartContext";
+
+
 export default function ProductCard({
   product,
 }: ProductCardProps) {
@@ -13,6 +16,12 @@ const {
   removeWishlist,
   isWishlisted,
 } = useWishlist();
+const {
+  addToCart,
+  isInCart,
+} = useCart();
+
+const added = isInCart(product.id);
 
 const wishlisted = isWishlisted(product.id);
   const finalPrice = (
@@ -118,17 +127,33 @@ const wishlisted = isWishlisted(product.id);
 
           </div>
 
-          <button
-            disabled={!user}
-            onClick={(e) => e.preventDefault()}
-            className={`mt-7 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${
-              user
-                ? "bg-black text-white hover:scale-[1.03] hover:bg-[#1d1d1d]"
-                : "cursor-not-allowed bg-gray-200 text-gray-500"
-            }`}
-          >
-            {user ? "🛒 Add to Cart" : "Login to Shop"}
-          </button>
+ <button
+  disabled={!user || added}
+  onClick={async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      alert("Please login to add items to cart");
+      return;
+    }
+
+    await addToCart(product.id);
+  }}
+  className={`mt-7 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${
+    !user
+      ? "cursor-not-allowed bg-gray-200 text-gray-500"
+      : added
+      ? "cursor-default bg-green-600 text-white"
+      : "bg-black text-white hover:scale-[1.03] hover:bg-[#1d1d1d]"
+  }`}
+>
+  {!user
+    ? "Login to Shop"
+    : added
+    ? "✓ Added to Cart"
+    : "🛒 Add to Cart"}
+</button>
 
         </div>
 
