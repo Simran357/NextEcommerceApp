@@ -6,68 +6,44 @@ export default function ProductTable({
 }: ProductGridProps) {
 
     return (
-
         <div className="bg-white rounded-3xl shadow border">
-
             <div className="flex justify-between items-center p-6 border-b">
-
                 <h2 className="text-2xl font-bold">
-
                     Products
-
                 </h2>
-
                 <button
                     className="bg-blue-600 text-white px-5 py-3 rounded-xl"
                 >
                     + Add Product
                 </button>
-
             </div>
-
             <table className="w-full">
-
                 <thead className="bg-gray-50">
-
                     <tr>
-
                         <th className="p-4 text-left">
                             Product
                         </th>
-
                         <th>
                             Category
                         </th>
-
                         <th>
                             Price
                         </th>
-
                         <th>
                             Stock
                         </th>
-
                         <th>
                             Actions
                         </th>
-
                     </tr>
-
                 </thead>
-
                 <tbody>
-
                     {products.map(product => (
-
                         <tr
                             key={product.id}
-                            className="border-t hover:bg-gray-50"
-                        >
-
+                            className="border-t hover:bg-gray-50">
                             <td className="p-4">
-
                                 <div className="flex items-center gap-4">
-
                                     <Image
                                         src={product.thumbnail}
                                         alt={product.title}
@@ -95,7 +71,6 @@ export default function ProductTable({
                             <td>
                                 {product.category}
                             </td>
-
                             <td>
                                 ₹{product.price}
                             </td>

@@ -1,47 +1,96 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useWishlist } from "../context/wishlistContext";
 import type { ProductCardProps } from "@/interfaces/product";
 import { useAuth } from "../context/authContext";
 export default function ProductCard({
   product,
 }: ProductCardProps) {
+  const { user } = useAuth();
+const {
+  addWishlist,
+  removeWishlist,
+  isWishlisted,
+} = useWishlist();
+
+const wishlisted = isWishlisted(product.id);
   const finalPrice = (
     product.price -
     (product.price * product.discount_percentage) / 100
   ).toFixed(2);
 
-  const { user} = useAuth();
-
-
   return (
     <Link href={`/products/${product.id}`}>
-      <div className="bg-white rounded-2xl overflow-hidden shadow hover:shadow-xl transition duration-300 cursor-pointer group">
-        <div className="relative h-56 bg-gray-100">
+
+      <div className="group relative overflow-hidden rounded-[30px] border border-[#ece8df] bg-[#fffdf9] shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+
+        {/* Badge */}
+
+        <div className="absolute left-5 top-5 z-20 rounded-full bg-black px-4 py-1 text-xs font-semibold text-white">
+          {product.discount_percentage}% OFF
+        </div>
+
+        {/* Wishlist */}
+<button
+  onClick={async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      alert("Please login to use Wishlist");
+      return;
+    }
+
+    if (wishlisted) {
+      await removeWishlist(product.id);
+    } else {
+      await addWishlist(product.id);
+    }
+  }}
+  className="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-md transition duration-300 hover:scale-110"
+>
+  {wishlisted ? (
+    <FaHeart className="text-red-500 text-xl" />
+  ) : (
+    <FaRegHeart className="text-gray-700 text-xl" />
+  )}
+</button>
+        {/* Image */}
+
+        <div className="relative flex h-72 items-center justify-center overflow-hidden bg-gradient-to-br from-[#f8f4ef] to-[#fff]">
+
           <Image
             src={product.thumbnail}
             alt={product.title}
             fill
-            sizes="(max-width:768px) 100vw,33vw"
-            className="object-contain p-4 group-hover:scale-105 transition"
+            sizes="(max-width:768px)100vw,25vw"
+            className="object-contain p-8 transition duration-500 group-hover:scale-110 group-hover:rotate-2"
           />
-          <span className="absolute top-3 left-3 bg-green-600 text-white text-xs px-3 py-1 rounded-full">
-            {product.discount_percentage}% OFF
-          </span>
+
         </div>
-        <div className="p-5">
-          <p className="text-xs uppercase text-gray-400">
+
+        {/* Content */}
+
+        <div className="p-6">
+
+          <span className="rounded-full bg-[#f4efe7] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gray-600">
             {product.category}
-          </p>
-          <h2 className="font-bold text-lg mt-2 line-clamp-2">
+          </span>
+
+          <h2 className="mt-4 line-clamp-2 text-xl font-bold leading-7 text-gray-900">
             {product.title}
           </h2>
-          <p className="text-sm text-gray-500 mt-2">
-            Brand : {product.brand}
+
+          <p className="mt-2 text-sm text-gray-500">
+            {product.brand}
           </p>
-          <div className="flex justify-between items-center mt-3">
-            <span className="text-yellow-500">
-                ⭐ {product.rating}
-            </span>
+
+          <div className="mt-5 flex items-center justify-between">
+
+            <div className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
+              ⭐ {product.rating}
+            </div>
 
             <span
               className={`text-sm font-semibold ${
@@ -50,30 +99,41 @@ export default function ProductCard({
                   : "text-red-500"
               }`}
             >
-              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              {product.stock > 0
+                ? "In Stock"
+                : "Out of Stock"}
             </span>
-          </div>
-          <div className="mt-4 flex items-center gap-3">
-            <p className="text-2xl font-bold text-blue-600">
-              ₹ {finalPrice}
-            </p>
-            <p className="line-through text-gray-400">
-              ₹ {product.price}
-            </p>
+
           </div>
 
-<button
-  disabled={!user}
-  className={`w-full mt-5 rounded-lg py-3 font-semibold ${
-    user
-      ? "bg-blue-600 hover:bg-blue-700 text-white"
-      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-  }`}
->
-  {user ? "Add To Cart" : "Login to Add"}
-</button>
+          <div className="mt-6 flex items-end gap-3">
+
+            <h3 className="text-3xl font-black text-gray-900">
+              ₹{finalPrice}
+            </h3>
+
+            <span className="text-lg text-gray-400 line-through">
+              ₹{product.price}
+            </span>
+
+          </div>
+
+          <button
+            disabled={!user}
+            onClick={(e) => e.preventDefault()}
+            className={`mt-7 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${
+              user
+                ? "bg-black text-white hover:scale-[1.03] hover:bg-[#1d1d1d]"
+                : "cursor-not-allowed bg-gray-200 text-gray-500"
+            }`}
+          >
+            {user ? "🛒 Add to Cart" : "Login to Shop"}
+          </button>
+
         </div>
+
       </div>
+
     </Link>
   );
 }

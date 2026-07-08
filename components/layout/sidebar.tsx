@@ -27,13 +27,13 @@ export default function Sidebar() {
   return (
     <aside className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
 
-      <h2 className="text-2xl font-bold mb-6">
+      <h2 className="text-2xl font-bold mb-4">
         Filters
       </h2>
 
       {/* Category */}
 
-      <div className="mb-8">
+      <div className="mb-4">
 
         <h3 className="font-semibold mb-3">Category</h3>
 
@@ -68,7 +68,7 @@ export default function Sidebar() {
 
       {/* Brand */}
 
-      <div className="mb-8">
+      <div className="mb-4">
 
         <h3 className="font-semibold mb-3">Brand</h3>
 
@@ -88,7 +88,7 @@ export default function Sidebar() {
 
       {/* Rating */}
 
-      <div className="mb-8">
+      <div className="mb-4">
 
         <h3 className="font-semibold mb-3">Rating</h3>
 
@@ -107,7 +107,7 @@ export default function Sidebar() {
 
       {/* Stock */}
 
-      <div className="mb-8">
+      <div className="mb-4">
 
         <h3 className="font-semibold mb-3">Availability</h3>
 
@@ -139,7 +139,7 @@ export default function Sidebar() {
 
       {/* Discount */}
 
-      <div className="mb-8">
+      <div className="mb-4">
 
         <h3 className="font-semibold mb-3">Discount</h3>
 

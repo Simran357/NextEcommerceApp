@@ -4,12 +4,13 @@ import SearchBar from "../common/searchBar";
 import { useFilter } from "../context/filterContext";
 import type { NavbarModalProps } from "@/interfaces/product";
 import { useAuth } from "../context/authContext"
-
+import { FaHeart } from "react-icons/fa";
+import { useWishlist } from "@/components/context/wishlistContext";
 export default function Navbar({
   setShowLogin,
   setShowSignup,
 }: NavbarModalProps) {
-
+const { wishlist } = useWishlist();
   const {
     search,
     setSearch,
@@ -64,6 +65,24 @@ const { role } = useAuth();
                   0
                 </span>
               </button>
+          {user ? (
+  <Link href="/wishlist" className="relative">
+    <FaHeart size={22} />
+
+    {wishlist.length > 0 && (
+      <span className="absolute -top-2 -right-2 ...">
+        {wishlist.length}
+      </span>
+    )}
+  </Link>
+) : (
+  <button
+    onClick={() => setShowLogin(true)}
+    className="relative"
+  >
+    <FaHeart size={22} />
+  </button>
+)}
               <FaUserCircle
                 size={32}
                 className="text-gray-600"/>
