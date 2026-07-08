@@ -8,11 +8,13 @@ import Link from "next/link";
 import { useCart } from "@/components/context/cartContext";
 import { getProducts } from "@/lib/products";
 import type { Product } from "@/interfaces/product";
-
+import { placeOrder } from "@/lib/orders";
+import { useAuth } from "@/components/context/authContext";
 export default function CheckoutClient() {
-const { cart, clearCart, removeFromCart } =
-  useCart();  const router = useRouter();
-
+const { cart, clearCart } =
+  useCart();  
+  const router = useRouter();
+const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [payment, setPayment] = useState("cod");
 const searchParams = useSearchParams();
@@ -217,15 +219,35 @@ const checkoutProducts = buyNowProduct
             <span>₹{total.toFixed(2)}</span>
 
           </div>
-
-         <button
+<button
   onClick={async () => {
-    if (buyNowProduct) {
-    } else {
-      await clearCart();
-    }
+    if (!user) return;
 
-    router.push("/orders");
+    try {
+      await placeOrder(
+        user.id,
+        checkoutProducts.map((item) => ({
+          product_id: item.id,
+          title: item.title,
+          thumbnail: item.thumbnail,
+          quantity: item.quantity,
+          price:
+            item.price -
+            (item.price *
+              item.discount_percentage) /
+              100,
+        }))
+      );
+
+      if (!buyNowProduct) {
+        await clearCart();
+      }
+
+      router.push("/orders");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to place order.");
+    }
   }}
   className="mt-8 w-full rounded-2xl bg-black py-4 font-semibold text-white transition hover:scale-105"
 >

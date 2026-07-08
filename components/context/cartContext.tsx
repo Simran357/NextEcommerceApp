@@ -57,38 +57,44 @@ async function clearCart() {
   setCart([]);
 }
   async function addToCart(productId: number) {
-    if (!user) return;
+  if (!user) return;
 
-    const existing = cart.find(
-      (item) => item.product_id === productId
-    );
+  console.log("Adding product:", productId);
 
-    if (existing) {
-      await increaseQty(productId);
-      return;
-    }
+  const existing = cart.find(
+    (item) => item.product_id === productId
+  );
 
-    const { error } = await supabase
-      .from("cart")
-      .insert({
-        user_id: user.id,
-        product_id: productId,
-        quantity: 1,
-      });
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setCart((prev) => [
-      ...prev,
-      {
-        product_id: productId,
-        quantity: 1,
-      },
-    ]);
+  if (existing) {
+    console.log("Already exists");
+    await increaseQty(productId);
+    return;
   }
+console.log("Adding product:", productId);
+
+const { data, error } = await supabase
+  .from("cart")
+  .insert({
+    user_id: user.id,
+    product_id: productId,
+    quantity: 1,
+  })
+  .select();
+
+console.log("Insert Data:", data);
+console.log("Insert Error:", error);
+
+
+  if (error) return;
+
+  setCart((prev) => [
+    ...prev,
+    {
+      product_id: productId,
+      quantity: 1,
+    },
+  ]);
+}
 
   async function removeFromCart(productId: number) {
     if (!user) return;

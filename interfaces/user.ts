@@ -3,10 +3,16 @@ import type { User } from "@supabase/supabase-js";
 export interface Profile {
   id: string;
   email: string;
-  full_name: string;
-  avatar_url?: string;
+  role: "user" | "admin";
+  full_name: string | null;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  pincode: string | null;
+  avatar_url: string | null;
+  created_at: string;
+  updated_at: string | null;
 }
-
 export interface AuthContextType {
   user: User | null;
 role: "user" | "admin";

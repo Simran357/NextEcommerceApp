@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import SearchBar from "../common/searchBar";
-import { useFilter } from "../context/filterContext";
 import type { NavbarModalProps } from "@/interfaces/product";
 import { useAuth } from "../context/authContext"
 import { FaHeart } from "react-icons/fa";
 import { useWishlist } from "@/components/context/wishlistContext";
 import { useCart } from "@/components/context/cartContext";
-
+import { useFilter } from "../context/filterContext"
+import { useState, useEffect, useRef } from "react";import { getProfile } from "@/lib/profile";
+import type { Profile } from "@/interfaces/user";
+import { useRouter } from "next/navigation";
 export default function Navbar({
   setShowLogin,
   setShowSignup,
@@ -18,19 +20,62 @@ const { wishlist } = useWishlist();
     setSearch,
   } = useFilter();
 
-const { cartCount } = useCart();
-  const { user, logout } = useAuth();
-  const { resetFilters } = useFilter();
-  const handleLogout = async () => {
-  try {
-    resetFilters();
-    await logout();
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-};
-const { role } = useAuth();
+const [profile, setProfile] =
+  useState<Profile | null>(null);
 
+const menuRef = useRef<HTMLDivElement>(null);
+const router = useRouter();
+
+const { resetFilters } = useFilter();
+const { cartCount } = useCart();
+const { user, logout, role } = useAuth(); 
+useEffect(() => {
+  console.log("Logged in user:", user);
+}, [user]);
+const [open, setOpen] = useState(false);
+useEffect(() => {
+  async function loadProfile() {
+    if (!user) return;
+
+    try {
+const data = await getProfile({
+  id: user.id,
+  email: user.email ?? undefined,
+});      setProfile(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  loadProfile();
+}, [user]);
+async function handleLogout() {
+  resetFilters();
+
+  await logout();
+
+  router.push("/products");
+}
+
+useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node)
+    ) {
+      setOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
+}, []);
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
@@ -94,17 +139,59 @@ const { role } = useAuth();
     <FaHeart size={22} />
   </button>
 )}
-              <FaUserCircle
-                size={32}
-                className="text-gray-600"/>
-
-<p>{role}</p>
-           <button
-  onClick={handleLogout}
-  className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+        <div
+  ref={menuRef}
+  className="relative"
 >
-  Logout
+  <button
+    onClick={() => setOpen(!open)}
+    className="flex items-center gap-2"
+  >
+    <FaUserCircle size={32} />
+      <span className="text-sm">
+    {profile?.full_name || user.email}
+  </span>
 </button>
+
+ {open && (
+  <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border bg-white shadow-lg">
+
+    <Link
+      href="/profile"
+      className="block px-4 py-3 hover:bg-gray-100"
+      onClick={() => setOpen(false)}
+    >
+      My Profile
+    </Link>
+
+    <Link
+      href="/orders/prevOrders"
+      className="block px-4 py-3 hover:bg-gray-100"
+      onClick={() => setOpen(false)}
+    >
+      My Orders
+    </Link>
+
+    {role === "admin" && (
+      <Link
+        href="/admin"
+        className="block px-4 py-3 hover:bg-gray-100"
+        onClick={() => setOpen(false)}
+      >
+        Admin Dashboard
+      </Link>
+    )}
+
+    <button
+      onClick={handleLogout}
+      className="w-full px-4 py-3 text-left text-red-500 hover:bg-gray-100"
+    >
+      Logout
+    </button>
+
+  </div>
+)}
+</div>
             </>
           )}
         </div>
