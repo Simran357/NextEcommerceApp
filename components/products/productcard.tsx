@@ -18,8 +18,10 @@ const {
 } = useWishlist();
 const {
   addToCart,
+  removeFromCart,
   isInCart,
 } = useCart();
+
 
 const added = isInCart(product.id);
 
@@ -128,25 +130,29 @@ const wishlisted = isWishlisted(product.id);
           </div>
 
  <button
-  disabled={!user || added}
-  onClick={async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  disabled={!user}
+ onClick={async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-    if (!user) {
-      alert("Please login to add items to cart");
-      return;
-    }
+  if (!user) {
+    alert("Please login to add items to cart");
+    return;
+  }
 
+  if (added) {
+    await removeFromCart(product.id);
+  } else {
     await addToCart(product.id);
-  }}
-  className={`mt-7 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${
-    !user
-      ? "cursor-not-allowed bg-gray-200 text-gray-500"
-      : added
-      ? "cursor-default bg-green-600 text-white"
-      : "bg-black text-white hover:scale-[1.03] hover:bg-[#1d1d1d]"
-  }`}
+  }
+}}
+ className={`mt-7 w-full rounded-2xl py-4 font-semibold transition-all duration-300 ${
+  !user
+    ? "cursor-not-allowed bg-gray-200 text-gray-500"
+    : added
+    ? "bg-green-600 text-white hover:bg-green-600"
+    : "bg-black text-white hover:scale-[1.03] hover:bg-[#1d1d1d]"
+}`}
 >
   {!user
     ? "Login to Shop"

@@ -1,13 +1,16 @@
 "use client";
-
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "../context/authContext";
 import { getOrders } from "@/lib/orders";
+import { useCart } from "../context/cartContext";
+import { useRouter } from "next/navigation";
 import type { Order , GroupedOrder} from "@/interfaces/order";
 export default function OrdersPage() {
   const { user } = useAuth();
-
+const { addToCart } = useCart();
+const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
 
   const [loading, setLoading] =
@@ -62,9 +65,31 @@ export default function OrdersPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="mb-10 text-4xl font-bold">
-        My Orders
-      </h1>
+     <div className="mb-8 flex items-center gap-2 text-sm text-gray-500">
+
+  <Link
+    href="/products"
+    className="hover:text-black transition"
+  >
+    Products
+  </Link>
+
+  <span>/</span>
+
+  <Link
+    href="/profile"
+    className="hover:text-black transition"
+  >
+    My Profile
+  </Link>
+
+  <span>/</span>
+
+  <span className="font-semibold text-black">
+    My Orders
+  </span>
+
+</div>
 
      <div className="space-y-8">
   {groupedOrders.map((order) => (
@@ -102,7 +127,8 @@ export default function OrdersPage() {
               <Image
                 src={item.thumbnail}
                 alt={item.title}
-                fill
+               fill
+  sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-contain"
               />
             </div>
@@ -140,9 +166,20 @@ export default function OrdersPage() {
             .toFixed(2)}
         </div>
 
-        <button className="rounded-xl bg-black px-6 py-3 text-white transition hover:bg-gray-800">
-          Buy Again
-        </button>
+        <button
+  onClick={async () => {
+    for (const item of order.items) {
+      for (let i = 0; i < item.quantity; i++) {
+        await addToCart(item.product_id);
+      }
+    }
+
+    router.push("/cart");
+  }}
+  className="rounded-xl bg-black px-6 py-3 text-white transition hover:bg-gray-800"
+>
+  Buy Again
+</button>
       </div>
     </div>
   ))}

@@ -134,6 +134,7 @@ const cartProducts = cart
                     src={product.thumbnail}
                     alt={product.title}
                     fill
+  sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-contain"
                   />
 
