@@ -8,78 +8,108 @@ export default function AuthForm({
   buttonText,
   onSubmit,
   changeForm,
+  showSwitch = true,
 }: AuthFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isLogin = title === "Login";
 
-  return (
-    <div className="bg-white w-[400px] rounded-xl shadow-lg p-8">
-      <h1 className="text-3xl font-bold text-center text-blue-600">
-        ShopEase
+ return (
+  <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 shadow-2xl">
+    <div className="mb-8 text-center">
+      <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 to-blue-600 shadow-lg">
+        <span className="text-3xl text-white">🛍️</span>
+      </div>
+
+      <h1 className="text-3xl font-bold text-slate-900">
+        {title}
       </h1>
 
-      <p className="text-center text-gray-500 mt-2 mb-6">
-        {isLogin ? "Welcome Back" : "Create Your Account"}
+      <p className="mt-2 text-slate-500">
+        {title === "Admin Login"
+          ? "Sign in to access your admin dashboard."
+          : isLogin
+          ? "Welcome back! Sign in to continue shopping."
+          : "Create your account and start shopping today."}
       </p>
+    </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(email, password);
-        }}
-        className="space-y-4"
-      >
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(email, password);
+      }}
+      className="space-y-5"
+    >
+      <div>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Email Address
+        </label>
+
         <input
           type="email"
           autoComplete="email"
-          placeholder="Email"
-          className="w-full border rounded-lg p-3"
+          placeholder="Enter your email"
+          className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium text-slate-700">
+          Password
+        </label>
 
         <input
           type="password"
-          placeholder="Password"
-          className="w-full border rounded-lg p-3"
-           autoComplete={title === "Login" ? "current-password" : "new-password"}
+          autoComplete={
+            isLogin
+              ? "current-password"
+              : "new-password"
+          }
+          placeholder="Enter your password"
+          className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition duration-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+      </div>
 
-        <button className="w-full bg-blue-600 text-white rounded-lg p-3">
-          {buttonText}
-        </button>
-      </form>
+      <button
+        type="submit"
+        className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 py-3 text-lg font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+      >
+        {buttonText}
+      </button>
+    </form>
 
-      <p className="text-center mt-5">
+    {showSwitch && (
+      <div className="mt-8 border-t border-slate-200 pt-6 text-center text-sm text-slate-500">
         {isLogin ? (
-         <>
-  Don&apos;t have an account?{" "}
-
-  <button
-    type="button"
-    onClick={changeForm}
-    className="text-blue-600 font-semibold"
-  >
-    Sign Up
-  </button>
-</>
+          <>
+            Don&apos;t have an account?{" "}
+            <button
+              type="button"
+              onClick={changeForm}
+              className="font-semibold text-indigo-600 transition hover:text-indigo-800 hover:underline"
+            >
+              Create Account
+            </button>
+          </>
         ) : (
-         <>
-  Already have an account?{" "}
-
-  <button
-    type="button"
-    onClick={changeForm}
-    className="text-blue-600 font-semibold"
-  >
-    Login
-  </button>
-</>
+          <>
+            {/* Already have an account?{" "}
+            <button
+              type="button"
+              onClick={changeForm}
+              className="font-semibold text-indigo-600 transition hover:text-indigo-800 hover:underline"
+            >
+              Login
+            </button> */}
+          </>
         )}
-      </p>
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 }

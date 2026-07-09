@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/authContext";
 import {
-  FaSearch,
   FaSignOutAlt,
   FaUserCircle,
 } from "react-icons/fa";
@@ -38,23 +37,6 @@ export default function AdminNavbar() {
         {/* Right */}
 
         <div className="flex items-center gap-5">
-
-          {/* Search */}
-
-          <div className="relative hidden lg:block">
-
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-            <input
-              placeholder="Search products..."
-              className="w-72 rounded-2xl border border-gray-200 bg-gray-50 py-3 pl-11 pr-4 outline-none transition focus:border-indigo-500 focus:bg-white"
-            />
-
-          </div>
-
-       
-
-          {/* Admin */}
 
           <div className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-2 shadow-sm">
 

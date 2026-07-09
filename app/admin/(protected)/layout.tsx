@@ -17,7 +17,8 @@ export default function AdminLayout({
           <AdminNavbar />
 
           <main className="p-8">
-            <Breadcrumbs />
+                    <Breadcrumbs />
+          
             {children}
           </main>
         </div>

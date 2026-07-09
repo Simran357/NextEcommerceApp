@@ -27,8 +27,12 @@ export interface ProductGridProps {
 export interface AuthFormProps {
   title: string;
   buttonText: string;
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (
+    email: string,
+    password: string
+  ) => void;
   changeForm: () => void;
+  showSwitch?: boolean;
 }
 
 export interface NavbarModalProps {

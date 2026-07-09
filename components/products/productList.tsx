@@ -14,6 +14,9 @@ import useDebounce from "@/app/hooks/useDebounce";
 export default function ProductList({
   products,
 }: ProductGridProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+const productsPerPage = 6;
   const {
     search,
     category,
@@ -23,6 +26,7 @@ export default function ProductList({
     discount,
     sort,
   } = useFilter();
+  
   const debouncedSearch = useDebounce(search, 500);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -94,6 +98,27 @@ export default function ProductList({
       );
       break;
   }
+
+const totalPages = Math.max(
+  1,
+  Math.ceil(filteredProducts.length / productsPerPage)
+);
+
+const safeCurrentPage = Math.min(
+  currentPage,
+  Math.max(totalPages, 1)
+);
+
+const lastProductIndex =
+  safeCurrentPage * productsPerPage;
+
+const firstProductIndex =
+  lastProductIndex - productsPerPage;
+
+const currentProducts = filteredProducts.slice(
+  firstProductIndex,
+  lastProductIndex
+);
 
 return (
   <>
@@ -205,9 +230,41 @@ return (
           <section className="col-span-9">
 
             <ProductGrid
-              products={filteredProducts}
-            />
+  products={currentProducts}
+/>
+<div className="mt-12 flex justify-center items-center gap-2">
 
+  <button
+  disabled={safeCurrentPage === 1}
+  onClick={() => setCurrentPage((page) => page - 1)}
+  className="rounded-lg border px-4 py-2 disabled:opacity-50"
+>
+  Previous
+</button>
+
+{Array.from({ length: totalPages }).map((_, index) => (
+  <button
+    key={index}
+    onClick={() => setCurrentPage(index + 1)}
+    className={`h-10 w-10 rounded-lg transition ${
+      safeCurrentPage === index + 1
+        ? "bg-black text-white"
+        : "border hover:bg-gray-100"
+    }`}
+  >
+    {index + 1}
+  </button>
+))}
+
+<button
+  disabled={safeCurrentPage === totalPages}
+  onClick={() => setCurrentPage((page) => page + 1)}
+  className="rounded-lg border px-4 py-2 disabled:opacity-50"
+>
+  Next
+</button>
+
+</div>
           </section>
 
         </div>

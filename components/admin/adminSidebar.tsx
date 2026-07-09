@@ -7,7 +7,6 @@ import {
   FaBoxOpen,
   FaPlusCircle,
   FaUsers,
-  FaHeart,
   FaShoppingBag,
 } from "react-icons/fa";
 
@@ -34,11 +33,6 @@ export default function AdminSidebar() {
       href: "/admin/user",
       title: "Users",
       icon: <FaUsers />,
-    },
-    {
-      href: "/admin/wishlist",
-      title: "Wishlists",
-      icon: <FaHeart />,
     },
     {
       href: "/admin/orders",

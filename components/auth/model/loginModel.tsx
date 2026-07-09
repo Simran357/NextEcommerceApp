@@ -9,7 +9,7 @@ export default function LoginModal({
   openSignup,
 }: LoginModalProps) {
   const router = useRouter();
-  const handleLogin = async (
+const handleLogin = async (
   email: string,
   password: string
 ) => {
@@ -31,42 +31,28 @@ export default function LoginModal({
       .from("profiles")
       .select("role")
       .eq("id", data.user.id)
-      .maybeSingle();
+      .single();
 
   if (profileError) {
+    await supabase.auth.signOut();
     alert(profileError.message);
     return;
   }
 
-  // ADMIN LOGIN FROM USER MODAL
-  if (profile?.role === "admin") {
+  // ADMIN LOGIN
+  if (profile.role === "admin") {
     await supabase.auth.signOut();
 
-    onClose();
-
     alert("Please login through the Admin Portal.");
+
+    onClose();
 
     router.replace("/admin");
 
     return;
   }
 
-  // USER PROFILE DOESN'T EXIST
-  if (!profile) {
-    const { error } = await supabase
-      .from("profiles")
-      .insert({
-        id: data.user.id,
-        email: data.user.email,
-        role: "user",
-      });
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-  }
-
+  // NORMAL USER
   onClose();
 
   router.replace("/products");
