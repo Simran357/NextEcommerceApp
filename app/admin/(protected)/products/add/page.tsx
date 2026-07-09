@@ -7,7 +7,7 @@ import {
   FaArrowLeft,
   FaSave,
 } from "react-icons/fa";
-
+import { addProduct } from "@/lib/adminProducts";
 export default function AddProductPage() {
   const [form, setForm] = useState({
     title: "",
@@ -21,26 +21,56 @@ export default function AddProductPage() {
     discount_percentage: "",
   });
 
-  function handleChange(
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+function handleChange(
+  e: React.ChangeEvent<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >
+) {
+  const { name, value } = e.target;
+
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+}
+
+async function handleSubmit(
+  e: React.FormEvent
+) {
+  e.preventDefault();
+
+  try {
+    await addProduct({
+      title: form.title,
+      description: form.description,
+      category: form.category,
+      brand: form.brand,
+      thumbnail: form.thumbnail,
+      price: Number(form.price),
+      stock: Number(form.stock),
+      rating: Number(form.rating),
+      discount_percentage: Number(form.discount_percentage),
     });
+
+    alert("Product Added Successfully");
+
+    setForm({
+      title: "",
+      brand: "",
+      category: "",
+      description: "",
+      thumbnail: "",
+      price: "",
+      stock: "",
+      rating: "",
+      discount_percentage: "",
+    });
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong");
   }
-
-  function handleSubmit(
-    e: React.FormEvent
-  ) {
-    e.preventDefault();
-
-    console.log(form);
-
-    alert("Product will be added here.");
-  }
+}
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">

@@ -67,9 +67,8 @@ export default function ProductForm({
         : "Product Added"
     );
 
-    router.push("/admin/products");
-
-    router.refresh();
+  router.refresh();
+router.push("/admin/products");
   } catch (error) {
     console.error(error);
 
@@ -212,11 +211,13 @@ export default function ProductForm({
               Preview
             </label>
 
-            <Image
-              src={form.thumbnail}
-              alt="Preview"
-              className="h-44 rounded-2xl border object-cover"
-            />
+           <Image
+  src={form.thumbnail}
+  alt="Preview"
+  width={500}
+  height={250}
+  className="h-44 w-full rounded-2xl border object-cover"
+/>
           </div>
         )}
       </div>

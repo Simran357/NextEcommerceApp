@@ -4,11 +4,19 @@ import type { Product } from "@/interfaces/product";
 export async function addProduct(
   product: Omit<Product, "id" | "created_at">
 ) {
-  const { error } = await supabase
+  console.log("Sending Product:", product);
+
+  const { data, error } = await supabase
     .from("products")
-    .insert(product);
+    .insert(product)
+    .select();
+
+  console.log("Inserted:", data);
+  console.log("Error:", error);
 
   if (error) throw error;
+
+  return data;
 }
 
 export async function updateProduct(
@@ -22,9 +30,17 @@ export async function updateProduct(
 
   if (error) throw error;
 }
-export async function getProduct(
-  id: number
-) {
+
+export async function deleteProduct(id: number) {
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw error;
+}
+
+export async function getProduct(id: number) {
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -34,15 +50,4 @@ export async function getProduct(
   if (error) throw error;
 
   return data;
-}
-
-export async function deleteProduct(
-  id: number
-) {
-  const { error } = await supabase
-    .from("products")
-    .delete()
-    .eq("id", id);
-
-  if (error) throw error;
 }
