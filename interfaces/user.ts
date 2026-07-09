@@ -1,5 +1,8 @@
+// interfaces/user.ts
 
-import type { User } from "@supabase/supabase-js";
+import type { ReactNode } from "react";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
+
 export interface Profile {
   id: string;
   email: string;
@@ -13,11 +16,13 @@ export interface Profile {
   created_at: string;
   updated_at: string | null;
 }
+
 export interface AuthContextType {
-  user: User | null;
-role: "user" | "admin";
+  user: SupabaseUser | null;
+  role: "user" | "admin";
   loading: boolean;
-isAuthenticated: boolean;
+  roleLoading: boolean;
+  isAuthenticated: boolean;
   logout: () => Promise<void>;
 }
 
@@ -31,12 +36,22 @@ export interface SignupModalProps {
   openLogin: () => void;
 }
 
-export interface adminDashboardProps{
+export interface AdminUser {
+  id: string;
+  full_name: string | null;
+  email: string;
+  role: "user" | "admin";
+  city: string | null;
+  avatar_url: string | null;
+  created_at: string;
+}
 
-title:string;
+export interface UserGridProps {
+  users: AdminUser[];
+}
 
-value:string|number;
-
-icon:string;
-
+export interface AdminDashboardProps {
+  title: string;
+  value: string | number;
+  icon: ReactNode;
 }

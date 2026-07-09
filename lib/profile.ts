@@ -13,23 +13,6 @@ export async function getProfile(user: {
 
   if (error) throw error;
 
-  if (!data) {
-    const { data: newProfile, error: insertError } =
-      await supabase
-        .from("profiles")
-        .insert({
-          id: user.id,
-          email: user.email,
-          role: "user",
-        })
-        .select()
-        .single();
-
-    if (insertError) throw insertError;
-
-    return newProfile;
-  }
-
   return data;
 }
 export async function updateProfile(

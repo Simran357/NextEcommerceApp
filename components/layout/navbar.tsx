@@ -28,7 +28,7 @@ const router = useRouter();
 
 const { resetFilters } = useFilter();
 const { cartCount } = useCart();
-const { user, logout, role } = useAuth(); 
+const { user, logout, role,roleLoading } = useAuth(); 
 useEffect(() => {
   console.log("Logged in user:", user);
 }, [user]);
@@ -36,6 +36,7 @@ const [open, setOpen] = useState(false);
 useEffect(() => {
   async function loadProfile() {
     if (!user) return;
+      if (role === "admin") return;
 
     try {
 const data = await getProfile({
@@ -48,7 +49,7 @@ const data = await getProfile({
   }
 
   loadProfile();
-}, [user]);
+}, [user,role]);
 async function handleLogout() {
   resetFilters();
 
@@ -76,6 +77,10 @@ useEffect(() => {
     );
   };
 }, []);
+
+if (roleLoading) {
+  return null; // or a small skeleton
+}
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="max-w-7xl mx-auto h-16 flex items-center justify-between px-6">
@@ -121,7 +126,7 @@ useEffect(() => {
     </span>
   )}
 </Link>
-          {user ? (
+      {user && role !== "admin" ? (
   <Link href="/wishlist" className="relative">
     <FaHeart size={22} />
 
@@ -172,16 +177,7 @@ useEffect(() => {
       My Orders
     </Link>
 
-    {role === "admin" && (
-      <Link
-        href="/admin"
-        className="block px-4 py-3 hover:bg-gray-100"
-        onClick={() => setOpen(false)}
-      >
-        Admin Dashboard
-      </Link>
-    )}
-
+  
     <button
       onClick={handleLogout}
       className="w-full px-4 py-3 text-left text-red-500 hover:bg-gray-100"

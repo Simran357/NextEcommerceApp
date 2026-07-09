@@ -20,6 +20,7 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState<"user" | "admin">("user");
+  const [roleLoading, setRoleLoading] = useState(true);
 const isAuthenticated = !!user;
 const logout = async () => {
   await supabase.auth.signOut();
@@ -33,14 +34,20 @@ useEffect(() => {
   setUser(session?.user ?? null);
 
   if (session?.user) {
-    const { data } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", session.user.id)
-      .single();
+  setRoleLoading(true);
 
-    setRole(data?.role ?? "user");
-  }
+  const { data } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", session.user.id)
+    .single();
+
+  setRole(data?.role ?? "user");
+  setRoleLoading(false);
+} else {
+  setRole("user");
+  setRoleLoading(false);
+}
 
   setLoading(false);
 }
@@ -71,11 +78,12 @@ useEffect(() => {
   return () => subscription.unsubscribe();
 }, []);
   return (
-   <AuthContext.Provider
+  <AuthContext.Provider
   value={{
     user,
-    loading,
     role,
+    loading,
+    roleLoading,
     logout,
     isAuthenticated,
   }}

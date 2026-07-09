@@ -15,7 +15,7 @@ export default function ProtectedAdmin({
 
   useEffect(() => {
     if (!loading) {
-      if (!user) router.push("/login");
+      if (!user) router.push("/admin");
       else if (role !== "admin")
         router.push("/products");
     }

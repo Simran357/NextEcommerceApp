@@ -10,33 +10,67 @@ export default function LoginModal({
 }: LoginModalProps) {
   const router = useRouter();
   const handleLogin = async (
-    email: string,
-    password: string
-  ) => {
- const { data, error } = await supabase.auth.signInWithPassword({
-  email,
-  password,
-});
+  email: string,
+  password: string
+) => {
+  const { data, error } =
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-if (error) {
-  alert(error.message);
-  return;
-}
+  if (error) {
+    alert(error.message);
+    return;
+  }
 
-const { data: profile } = await supabase
-  .from("profiles")
-  .select("role")
-  .eq("id", data.user.id)
-  .single();
+  if (!data.user) return;
 
-onClose();
+  const { data: profile, error: profileError } =
+    await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", data.user.id)
+      .maybeSingle();
 
-if (profile?.role === "admin") {
-  router.push("/admin");
-} else {
-  router.push("/products");
-}
-  };
+  if (profileError) {
+    alert(profileError.message);
+    return;
+  }
+
+  // ADMIN LOGIN FROM USER MODAL
+  if (profile?.role === "admin") {
+    await supabase.auth.signOut();
+
+    onClose();
+
+    alert("Please login through the Admin Portal.");
+
+    router.replace("/admin");
+
+    return;
+  }
+
+  // USER PROFILE DOESN'T EXIST
+  if (!profile) {
+    const { error } = await supabase
+      .from("profiles")
+      .insert({
+        id: data.user.id,
+        email: data.user.email,
+        role: "user",
+      });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+  }
+
+  onClose();
+
+  router.replace("/products");
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

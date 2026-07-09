@@ -1,6 +1,5 @@
 import WishlistTable from "@/components/admin/wishlistTable";
 import { getAllWishlist } from "@/lib/adminWishlist";
-
 export default async function WishlistPage() {
   const wishlist = await getAllWishlist();
 
@@ -9,14 +8,6 @@ export default async function WishlistPage() {
       <div>
         <p className="text-sm font-semibold uppercase tracking-widest text-indigo-600">
           Administration
-        </p>
-
-        <h1 className="mt-2 text-4xl font-bold">
-          Wishlists
-        </h1>
-
-        <p className="mt-2 text-slate-500">
-          Products customers have saved.
         </p>
       </div>
 

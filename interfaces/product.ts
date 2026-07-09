@@ -91,3 +91,9 @@ export interface SearchBarProps {
   search: string;
   setSearch: (value: string) => void;
 }
+
+export interface ProductDetailsModalProps {
+  open: boolean;
+  productId: number | null;
+  onClose: () => void;
+}

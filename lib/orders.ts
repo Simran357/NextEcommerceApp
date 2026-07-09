@@ -1,17 +1,18 @@
 import { supabase } from "./supabase";
 
 
-export async function getOrders(userId: string) {
+export async function getOrders() {
   const { data, error } = await supabase
     .from("orders")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .select(`
+      *,
+      profiles(full_name,email)
+    `)
+    .order("created_at", {
+      ascending: false,
+    });
 
-  if (error) {
-    console.error(error);
-    return [];
-  }
+  if (error) throw error;
 
   return data;
 }
