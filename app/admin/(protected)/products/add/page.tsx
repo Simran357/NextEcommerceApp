@@ -40,6 +40,17 @@ async function handleSubmit(
   e.preventDefault();
 
   try {
+    console.log({
+  title: form.title,
+  description: form.description,
+  category: form.category,
+  brand: form.brand,
+  thumbnail: form.thumbnail,
+  price: Number(form.price),
+  stock: Number(form.stock),
+  rating: Number(form.rating),
+  discount_percentage: Number(form.discount_percentage),
+});
     await addProduct({
       title: form.title,
       description: form.description,

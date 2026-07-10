@@ -48,9 +48,6 @@ export default function OrdersTable({
                 Total
               </th>
 
-              <th className="text-left">
-                Status
-              </th>
 
               <th className="text-left">
                 Date
@@ -78,19 +75,7 @@ export default function OrdersTable({
                   ₹{order.total}
                 </td>
 
-                <td>
-                  <span
-                    className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                      order.status === "Delivered"
-                        ? "bg-green-100 text-green-700"
-                        : order.status === "Placed"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
+              
 
                 <td>
                   {new Date(
